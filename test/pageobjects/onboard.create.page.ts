@@ -43,12 +43,11 @@ class OnboardCreatePage extends Page {
 
     public async getRecoveryPhrase () {
         const recoveryPhrase: string[] = []
-        //ecoveryPhrase.push('test')
 
         for (let i = 1; i <= 12; i++) {
             let input = 'input[data-testid="input-recovery-phrase-' + i + '"]'
-            let a = await $(input).getValue()
-            recoveryPhrase.push(a)
+            let word = await $(input).getValue()
+            recoveryPhrase.push(word)
         }
 
         return recoveryPhrase
@@ -66,11 +65,11 @@ class OnboardCreatePage extends Page {
 
     public async enterPassword (password: string) {
 
-        let input = 'input[data-testid="input-new-password'
-        await $(input).setValue(password)
+        let newPass = 'input[data-testid="input-new-password"]'
+        await $(newPass).setValue(password)
 
-        let input2 = 'input[data-testid="input-repeat-password'
-        await $(input2).setValue(password)      
+        let repeatPass = 'input[data-testid="input-repeat-password"]'
+        await $(repeatPass).setValue(password)      
 
         return
     }

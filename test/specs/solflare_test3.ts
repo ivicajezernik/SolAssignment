@@ -9,14 +9,13 @@ import WalletManagementOptionsPage from '../pageobjects/wallet.management.option
 
 describe('My third test', () => {
     it('should create new wallet and manage wallets', async () => {
-        //debugger
+
+        //open page, read and enter recovery phrase, enter password
         await OnboardPage.open()
-        //await expect (OnboardPage.btnNewWallet).toHaveText(expect.stringContaining('I need a new wallet'))
+
         await OnboardPage.getWallet()
-        //await expect (OnboardCreatePage.header).toHaveText(expect.stringContaining('Keys to Your Kingdom'))
 
         const recoveryPhrase = await OnboardCreatePage.getRecoveryPhrase()
-        console.log('Recovery phrase: ' + recoveryPhrase)
 
         await OnboardCreatePage.phraseSaved()
 
@@ -34,30 +33,27 @@ describe('My third test', () => {
 
         let wallets = await WalletManagementPage.getWallets()
 
-        //console.log (wallets.length)
-        //console.log (await wallets[0].getText())
-
         let main = 'Main Wallet'
         let numWallets = await wallets.length
         let mainExists = false
 
+        //wallet list is sometimes fetched before fully initialized, this code waits for main wallet to be visible
+        await wallets[0].waitUntil(async function () {
+            return (await wallets[0].getText()) !== ''
+        }, {
+            timeout: 5000,
+            timeoutMsg: 'expected text to be different after 5s'
+        })
+
         for (let i = 0; i < numWallets; i++) {
             let text = await wallets[i].getText()
-            await wallets[i].waitUntil(async function () {
-                return (await wallets[i].getText()) !== ''
-            }, {
-                timeout: 5000,
-                timeoutMsg: 'expected text to be different after 5s'
-            })
-            if (text === ''){
-                text = await wallets[i].getText()
-            }
             if (text === main) {
                 mainExists = true
                 break
             }
         }
 
+        //verify that main wallet is displayed
         await expect(mainExists).toEqual(true);
 
         await wallets[numWallets-1].click()
@@ -68,6 +64,7 @@ describe('My third test', () => {
 
         let walletAddresses = await WalletManagementOptionsPage.getWallets()
 
+        //same as above, wait for all wallets to be loaded/shown
         await walletAddresses[0].waitUntil(async function () {
                 walletAddresses = await WalletManagementOptionsPage.getWallets()
                 return (await walletAddresses.length) !== 1
@@ -77,8 +74,9 @@ describe('My third test', () => {
         })
 
         walletAddresses = await WalletManagementOptionsPage.getWallets()
-        await expect (walletAddresses[0]).toBeDisabled()
         let isChecked = await walletAddresses[0].getAttribute("data-state")
+        //verify that first wallet toggle is on and disabled
+        await expect (walletAddresses[0]).toBeDisabled()
         await expect (isChecked).toEqual('checked')
 
         await walletAddresses[2].click()
@@ -101,9 +99,8 @@ describe('My third test', () => {
 
         let newWalletsNum = wallets.length
 
+        //verify that two additional wallets are visible compared to before
         await expect(newWalletsNum).toEqual(oldWalletsNum + 2)
-
-        //await browser.debug()
     })
 })
 

@@ -1,5 +1,3 @@
-const debug = process.env.DEBUG
-
 export const config: WebdriverIO.Config = {
     //
     // ====================
@@ -29,7 +27,6 @@ export const config: WebdriverIO.Config = {
         './test/specs/solflare_test1.ts',
         './test/specs/solflare_test2.ts',
         './test/specs/solflare_test3.ts'
-        //'./test/specs/test.e2e.ts'
     ],
     // Patterns to exclude.
     exclude: [

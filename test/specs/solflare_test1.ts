@@ -5,7 +5,7 @@ import OnboardCreatePage from '../pageobjects/onboard.create.page.js'
 
 describe('My first test', () => {
     it('should copy new wallet recovery phrase', async () => {
-        //debugger
+
         await OnboardPage.open()
         //await expect (OnboardPage.btnNewWallet).toHaveText(expect.stringContaining('I need a new wallet'))
         await OnboardPage.getWallet()
@@ -17,11 +17,10 @@ describe('My first test', () => {
         // now you can read the clipboard via, e.g.
         const clipboardText = await browser.execute(() => navigator.clipboard.readText());
         const clipboardList = clipboardText.split(' ')
-        //console.log('Copied list: ' + clipboardList)
 
         const recoveryPhrase = await OnboardCreatePage.getRecoveryPhrase()
-        //console.log('Recovery phrase: ' + recoveryPhrase)
 
+        //verify that copied recovery phrase is equal to one visible on screen
         await expect (clipboardList).toEqual(recoveryPhrase)
         
         //await browser.debug()
