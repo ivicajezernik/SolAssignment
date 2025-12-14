@@ -32,6 +32,15 @@ describe('My second test', () => {
         await browser.switchToWindow(handles[1])
         currentUrl = await browser.getUrl()
 
+        //url can be returned as blank on firefox sometimes
+        await browser.waitUntil(async function () {
+            currentUrl = await browser.getUrl()
+            return (currentUrl) !== 'about:blank' && (currentUrl) !== ''
+        }, {
+            timeout: 5000,
+            timeoutMsg: 'expected more wallets after 5s'
+        })
+
         //verify that current url is X and opened in second tab
         await expect (currentUrl).toEqual(url)
         await expect (handles.length).toEqual(2)

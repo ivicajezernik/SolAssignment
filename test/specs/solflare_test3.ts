@@ -66,11 +66,11 @@ describe('My third test', () => {
 
         //same as above, wait for all wallets to be loaded/shown
         await walletAddresses[0].waitUntil(async function () {
-                walletAddresses = await WalletManagementOptionsPage.getWallets()
-                return (await walletAddresses.length) !== 1
-            }, {
-                timeout: 5000,
-                timeoutMsg: 'expected more wallets after 5s'
+            walletAddresses = await WalletManagementOptionsPage.getWallets()
+            return (await walletAddresses.length) !== 1
+        }, {
+            timeout: 5000,
+            timeoutMsg: 'expected more wallets after 5s'
         })
 
         walletAddresses = await WalletManagementOptionsPage.getWallets()
@@ -90,12 +90,12 @@ describe('My third test', () => {
 
         wallets = await WalletManagementPage.getWallets()
         await browser.waitUntil(async function () {
-                wallets = await WalletManagementPage.getWallets()
-                return (await wallets.length) !== 0
-            }, {
-                timeout: 5000,
-                timeoutMsg: 'expected more wallets after 5s'
-            })
+            wallets = await WalletManagementPage.getWallets()
+            return (await wallets.length) !== 0
+        }, {
+            timeout: 5000,
+            timeoutMsg: 'expected more wallets after 5s'
+        })
 
         let newWalletsNum = wallets.length
 
